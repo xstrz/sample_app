@@ -1,5 +1,10 @@
 module SessionsHelper
   
+  def sing_in(user)
+    cookies.permanent.signed[:remember_token] = [user.id, user.salt]
+    current_user = user
+  end
+  
   def current_user?(user)
     user == current_user
   end
@@ -11,11 +16,6 @@ module SessionsHelper
   def redirect_back_or(default)
       redirect_to(session[:return_to] || default)
       clear_return_to
-  end
-  
-  def sign_in(user)
-    cookies.permanent.signed[:remember_token] = [user.id, user.salt]
-    current_user = user
   end
   
   def sign_out
